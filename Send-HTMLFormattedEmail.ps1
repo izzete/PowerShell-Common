@@ -74,9 +74,9 @@ function Send-HTMLFormattedEmail {
         [String] $Relay,
 
 		[Parameter(Mandatory=$True)]
-        [String]$XSLPath,
+        [String] $XSLPath,
 
-		[Boolean]$Async = $false
+		[Boolean] $Async = $false
     )
     
     try {
