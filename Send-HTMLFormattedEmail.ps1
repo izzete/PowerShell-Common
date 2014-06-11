@@ -48,18 +48,36 @@ function Send-HTMLFormattedEmail {
         2014-06-11  IZZETE  Initial version
 	#>
     param(
-		[Parameter(Mandatory=$True)][String]$To,
-		[Parameter(Mandatory=$True)][String]$ToDisName,
-		[String]$CC,
-		[String]$BCC,
-		[Parameter(Mandatory=$True)][String]$From,
-		[Parameter(Mandatory=$True)][String]$FromDisName,
-		[Parameter(Mandatory=$True)][String]$Subject,
-		[Parameter(Mandatory=$True)][String]$Content,
-		[Parameter(Mandatory=$True)][String]$Relay,
-		[Parameter(Mandatory=$True)][String]$XSLPath,
+		[Parameter(Mandatory=$True)]
+        [String] $To,
+
+		[Parameter(Mandatory=$True)]
+        [String] $ToDisName,
+
+		[String] $CC,
+
+		[String] $BCC,
+
+		[Parameter(Mandatory=$True)]
+        [String] $From,
+
+		[Parameter(Mandatory=$True)]
+        [String] $FromDisName,
+
+		[Parameter(Mandatory=$True)]
+        [String] $Subject,
+
+		[Parameter(Mandatory=$True)]
+        [String] $Content,
+
+		[Parameter(Mandatory=$True)]
+        [String] $Relay,
+
+		[Parameter(Mandatory=$True)]
+        [String]$XSLPath,
+
 		[Boolean]$Async = $false
-        )
+    )
     
     try {
 
