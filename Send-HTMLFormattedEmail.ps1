@@ -38,7 +38,8 @@ function Send-HTMLFormattedEmail {
 		[Parameter(Mandatory=$True)][String]$Subject,
 		[Parameter(Mandatory=$True)][String]$Content,
 		[Parameter(Mandatory=$True)][String]$Relay,
-		[Parameter(Mandatory=$True)][String]$XSLPath
+		[Parameter(Mandatory=$True)][String]$XSLPath,
+		[Boolean]$Async = $false
         )
     
     try {
@@ -110,7 +111,12 @@ function Send-HTMLFormattedEmail {
         Write-Debug "$(Get-Date -Format r) [Send-HTMLFormattedEmail] SMTP client object created"
 
         # Send The Message
-        $Client.Send($Message)
+        if ($Async) {
+            $Client.SendAsync($Message,$null)
+        }
+        else {
+            $Client.Send($Message)
+        }
         Write-Verbose "$(Get-Date -Format r) [Send-HTMLFormattedEmail] E-mail sent to $To"
 
         }  
