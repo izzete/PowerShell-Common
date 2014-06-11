@@ -1,32 +1,51 @@
 function Send-HTMLFormattedEmail {
 	<# 
-	.Synopsis
-    	Used to send an HTML Formatted Email.
-    .Description
-    	Used to send an HTML Formatted Email that is based on an XSLT template.
-	.Parameter To
-		Email address or addresses for whom the message is being sent to.
-		Addresses should be seperated using ;.
-	.Parameter ToDisName
-		Display name for whom the message is being sent to.
-	.Parameter CC
+	.SYNOPSIS
+    	Sends an HTML formatted e-mail that is based on an XSLT template
+
+    .DESCRIPTION
+    	Sends an HTML formatted e-mail that is based on an XSLT template
+
+	.PARAMETER To
+		Email address or addresses for whom the message is being sent to
+
+		Addresses should be seperated using semi-colon (';')
+
+	.PARAMETER ToDisName
+		Display name for whom the message is being sent to
+
+	.PARAMETER CC
 		Email address if you want CC a recipient.
-		Addresses should be seperated using ;.
-	.Parameter BCC
+		Addresses should be seperated using semi-colon (';')
+
+	.PARAMETER BCC
 		Email address if you want BCC a recipient.
-		Addresses should be seperated using ;.
-	.Parameter From
-		Email address for whom the message comes from.
-	.Parameter FromDisName
-		Display name for whom the message comes from.
-	.Parameter Subject
-		The subject of the email address.
-	.Parameter Content
-		The content of the message (to be inserted into the XSL Template).
-	.Parameter Relay
-		FQDN or IP of the SMTP relay to send the message to.
-	.XSLPath
-		The full path to the XSL template that is to be used.
+		Addresses should be seperated using semi-colon (';')
+
+	.PARAMETER From
+		Email address for whom the message comes from
+
+#	.Parameter FromDisName
+#		Display name for whom the message comes from
+
+	.PARAMETER Subject
+		The subject line for the message
+
+	.PARAMETER XSLPath
+		The full path to the XSL template that is to be used
+
+	.PARAMETER Content
+		The content of the message (to be inserted into the XSL Template)
+
+	.PARAMETER Relay
+		FQDN or IP of the SMTP relay to send the message using
+
+        Defaults to mail.citrix.com on port 25
+
+    .NOTES
+        Based on script downloaded from http://poshcode.org/1035
+
+        2014-06-11  IZZETE  Initial version
 	#>
     param(
 		[Parameter(Mandatory=$True)][String]$To,
