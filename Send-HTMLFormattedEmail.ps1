@@ -132,13 +132,13 @@ function Send-HTMLFormattedEmail {
 		if ($CC){
 			$CC = $CC.Split(";") # Make an array of addresses.
 			$CC | foreach {$Message.CC.Add((New-Object System.Net.Mail.Mailaddress $_.Trim()))} # Add them to the message object.
-			}
+        }
 
 		# Add BCC
 		if ($BCC){
 			$BCC = $BCC.Split(";") # Make an array of addresses.
 			$BCC | foreach {$Message.BCC.Add((New-Object System.Net.Mail.Mailaddress $_.Trim()))} # Add them to the message object.
-			}
+		}
 
         Write-Debug "$(Get-Date -Format r) [Send-HTMLFormattedEmail] Message object created"
      
@@ -154,13 +154,14 @@ function Send-HTMLFormattedEmail {
         else {
             $Client.Send($Message)
         }
+
         Write-Verbose "$(Get-Date -Format r) [Send-HTMLFormattedEmail] E-mail sent to $To"
 
-        }  
+    }  
     catch {
 		throw $_
-        }   
-    }
+    }   
+}
 
 ##################################################
 # Main
