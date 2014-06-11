@@ -42,6 +42,9 @@ function Send-HTMLFormattedEmail {
         )
     
     try {
+
+        Write-Debug "$(Get-Date -Format r) [Send-HTMLFormattedEmail] Starting"
+
         # Load XSL Argument List
         $XSLArg = New-Object System.Xml.Xsl.XsltArgumentList
         $XSLArg.Clear() 
@@ -64,6 +67,8 @@ function Send-HTMLFormattedEmail {
 
         $XMLWriter.Flush()
         $MemStream.Position = 0
+
+        Write-Debug "$(Get-Date -Format r) [Send-HTMLFormattedEmail] XML transform complete"
      
         # Load the results
         $FinalXMLDoc.Load($MemStream) 
@@ -96,12 +101,18 @@ function Send-HTMLFormattedEmail {
 			$BCC = $BCC.Split(";") # Make an array of addresses.
 			$BCC | foreach {$Message.BCC.Add((New-Object System.Net.Mail.Mailaddress $_.Trim()))} # Add them to the message object.
 			}
+
+        Write-Debug "$(Get-Date -Format r) [Send-HTMLFormattedEmail] Message object created"
      
         # Create SMTP Client
         $Client = New-Object System.Net.Mail.SmtpClient $Relay
 
+        Write-Debug "$(Get-Date -Format r) [Send-HTMLFormattedEmail] SMTP client object created"
+
         # Send The Message
         $Client.Send($Message)
+        Write-Verbose "$(Get-Date -Format r) [Send-HTMLFormattedEmail] E-mail sent to $To"
+
         }  
     catch {
 		throw $_
