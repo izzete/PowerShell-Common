@@ -48,32 +48,32 @@ function Send-HTMLFormattedEmail {
         2014-06-11  IZZETE  Initial version
 	#>
     param(
-		[Parameter(Mandatory=$True)]
+		[Parameter(Mandatory=$true)]
         [String] $To,
 
-		[Parameter(Mandatory=$True)]
+		[Parameter(Mandatory=$true)]
         [String] $ToDisName,
 
 		[String] $CC,
 
 		[String] $BCC,
 
-		[Parameter(Mandatory=$True)]
+		[Parameter(Mandatory=$true)]
         [String] $From,
 
-		[Parameter(Mandatory=$True)]
+		[Parameter(Mandatory=$true)]
         [String] $FromDisName,
 
-		[Parameter(Mandatory=$True)]
+		[Parameter(Mandatory=$true)]
         [String] $Subject,
 
-		[Parameter(Mandatory=$True)]
+		[Parameter(Mandatory=$true)]
         [String] $Content,
 
-		[Parameter(Mandatory=$True)]
+		[Parameter(Mandatory=$true)]
         [String] $Relay,
 
-		[Parameter(Mandatory=$True)]
+		[Parameter(Mandatory=$true)]
         [String] $XSLPath,
 
 		[Boolean] $Async = $false
@@ -86,8 +86,8 @@ function Send-HTMLFormattedEmail {
         # Load XSL Argument List
         $XSLArg = New-Object System.Xml.Xsl.XsltArgumentList
         $XSLArg.Clear() 
-        $XSLArg.AddParam("To", $Null, $ToDisName)
-        $XSLArg.AddParam("Content", $Null, $Content)
+        $XSLArg.AddParam("To", $null, $ToDisName)
+        $XSLArg.AddParam("Content", $null, $Content)
 
         # Load Documents
         $BaseXMLDoc = New-Object System.Xml.XmlDocument
@@ -118,7 +118,7 @@ function Send-HTMLFormattedEmail {
 		# Now Populate the Message Object.
         $Message.Subject = $Subject
         $Message.Body = $Body
-        $Message.IsBodyHTML = $True
+        $Message.IsBodyHTML = $true
 		
 		# Add From
         $MessFrom = New-Object System.Net.Mail.MailAddress $From, $FromDisName
