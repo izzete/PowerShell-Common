@@ -194,20 +194,23 @@ function Get-CachedADGroups {
     Write-Verbose "Found $($Results.Count) groups"
 }
 
-Write-Output "`nMail-Enabled?"
-$Results | Group-Object -Property MailEnabled -NoElement | select Name,Count | ft -Property @{Expression="   "},* -AutoSize -HideTableHeaders
+Get-MailEnabledCount {
+    Write-Output "`nMail-Enabled?"
+    $Results | Group-Object -Property MailEnabled -NoElement | select Name,Count | ft -Property @{Expression="   "},* -AutoSize -HideTableHeaders
+}
 
-Write-Output "`nGroup Category"
-$Results | Group-Object -Property GroupCategory -NoElement | select Name,Count | ft -Property @{Expression="   "},* -AutoSize -HideTableHeaders
+Get-CategoryCount {
+    Write-Output "`nGroup Category"
+    $Results | Group-Object -Property GroupCategory -NoElement | select Name,Count | ft -Property @{Expression="   "},* -AutoSize -HideTableHeaders
+}
 
-Write-Output "`nGroup Scope"
-$Results | Group-Object -Property GroupScope -NoElement | select Name,Count | ft -Property @{Expression="   "},* -AutoSize -HideTableHeaders
+Get-ScopeCount {
+    Write-Output "`nGroup Scope"
+    $Results | Group-Object -Property GroupScope -NoElement | select Name,Count | ft -Property @{Expression="   "},* -AutoSize -HideTableHeaders
+}
 
-Write-Output "`nMember Count"
-$Results | Group-Object -Property Bucket -NoElement | select Name,Count | sort Name | ft -Property @{Expression="   "},* -AutoSize -HideTableHeaders
-
-function Get-SecurityGroupsWithNoMembers() {
-    $Results | ? { $_.MemberCount -eq 0 -and $_.MailEnabled -eq $false } # | select Name,MailEnabled,RecipientDisplayType,GroupCategory
+function Get-SecurityGroups() {
+    $Results | ? { $_.MailEnabled -eq $false } # | select Name,MailEnabled,RecipientDisplayType,GroupCategory
 }
 
 function Get-DistributionListsWithNoMembers() {
