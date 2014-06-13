@@ -114,6 +114,8 @@ function Get-RecipientDisplayType($value)  {
 }
 
 function Get-ADGroups {
+    [CmdletBinding()]
+    Param ()
 
     $Properties = @("Members", "proxyAddresses", "adminCount", "info", "ManagedBy", "msExchRecipientDisplayType", "msExchRecipientTypeDetails", "Modified")
     $Results    = `
