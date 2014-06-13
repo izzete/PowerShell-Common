@@ -5,27 +5,36 @@ $VerbosePreference = 'SilentlyContinue'             # set to SilentlyContinue to
 $DebugPreference   = 'SilentlyContinue'             # set to SilentlyContinue to disable, Continue to enable
 $WarningPreference = 'SilentlyContinue'             # set to SilentlyContinue to disable, Continue to enable
 
-# Housekeeping junk
-$ScriptName  = $MyInvocation.MyCommand.Name
-$ScriptPath  = "V:\Scripts\SelfServiceDL"   #Split-Path -Parent -Path $MyInvocation.MyCommand.Definition 
-#$ScriptPath  = $PSScriptRoot                         # PowerShell 3+
-$LogPath     = $ScriptPath + "\Logs"
-$ResultsPath = $ScriptPath + "\Results" 
-$PicklePath  = $ScriptPath + "\Pickles"
+# Determine location of work folders
+if ($psISE) {
+    # If running in debugger
+    $global:ScriptName = $psISE.CurrentFile.DisplayName   # -replace ".ps1", ""
+    $global:ScriptPath = Split-Path -Parent -Path $psISE.CurrentFile.FullPath
+}
+else {
+    # Else running in powershell console
+    $global:ScriptName = $MyInvocation.MyCommand.Name
+    $global:ScriptPath = Split-Path -Parent -Path $MyInvocation.MyCommand.Definition 
+    #$global:ScriptPath  = $PSScriptRoot                         # PowerShell 3+
+}
 
-# Create subfolders
+$global:LogPath     = $ScriptPath + "\Logs"
+$global:ResultsPath = $ScriptPath + "\Results" 
+$global:PicklePath  = $ScriptPath + "\Pickles"
+
+# Create work folders
 New-Item -ItemType Directory -Force -Path $LogPath | Out-Null
 New-Item -ItemType Directory -Force -Path $ResultsPath | Out-Null
 New-Item -ItemType Directory -Force -Path $PicklePath | Out-Null
 
 # Get host info for system the script is running on
 $reg = Get-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\" | select "NV Hostname", "NV Domain"
-$HostFQDN = ($reg.'NV Hostname' + "." + $reg.'NV Domain').ToLower()
-$Hostname = ($reg.'NV Hostname').ToUpper()
+$global:HostFQDN = ($reg.'NV Hostname' + "." + $reg.'NV Domain').ToLower()
+$global:Hostname = ($reg.'NV Hostname').ToUpper()
 
 # Setup log file
-$Timestamp     = $(Get-Date -f yyyyMMdd_HHmmss)
-$LogFile       = $ScriptName -replace ".ps1", "_${Hostname}_${Timestamp}.log"
+$global:Timestamp = $(Get-Date -f yyyyMMdd_HHmmss)
+$global:LogFile   = $ScriptName -replace ".ps1", "_${Hostname}_${Timestamp}.log"
 
 
 #Start-Transcript "$LogFolder\$($Server)_$($Timestamp).log" -ErrorAction SilentlyContinue
