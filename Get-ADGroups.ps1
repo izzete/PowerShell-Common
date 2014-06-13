@@ -193,17 +193,17 @@ function Get-CachedADGroups {
     Write-Verbose "Found $($Results.Count) groups"
 }
 
-Get-MailEnabledCount {
+function Get-MailEnabledCount {
     Write-Output "`nMail-Enabled?"
     $Results | Group-Object -Property MailEnabled -NoElement | select Name,Count | ft -Property @{Expression="   "},* -AutoSize -HideTableHeaders
 }
 
-Get-CategoryCount {
+function Get-CategoryCount {
     Write-Output "`nGroup Category"
     $Results | Group-Object -Property GroupCategory -NoElement | select Name,Count | ft -Property @{Expression="   "},* -AutoSize -HideTableHeaders
 }
 
-Get-ScopeCount {
+function Get-ScopeCount {
     Write-Output "`nGroup Scope"
     $Results | Group-Object -Property GroupScope -NoElement | select Name,Count | ft -Property @{Expression="   "},* -AutoSize -HideTableHeaders
 }
