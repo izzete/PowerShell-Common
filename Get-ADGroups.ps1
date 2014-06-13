@@ -188,9 +188,8 @@ function Get-ADGroups {
 }
 
 function Get-CachedADGroups {
-    Write-Verbose "Reading ADGroup info"
-    # Uncomment line below to query AD, otherwise it uses cached results
-    $global:Results = Import-Csv (ls $ResultsPath\ADGroup* | sort -Descending Name | select -First 1).FullName
+    Write-Verbose "Reading cached ADGroup info"
+    $global:Results = Import-Csv (ls $global:ResultsPath\ADGroup* | sort -Descending Name | select -First 1).FullName
     Write-Verbose "Found $($Results.Count) groups"
 }
 
