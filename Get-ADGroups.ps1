@@ -162,15 +162,15 @@ function Get-ADGroups {
         if ($Count -eq 0) {
             Write-Verbose "[$Name] Get-ADGroup reports zero members"
 
-            $Count = (Get-ADGroupMember $Group).Count
-            if ($count -eq 0) {
+            $Members = Get-ADGroupMember $Group
+            if ($Members -eq $null) {
                 Write-Verbose "[$Name] Get-ADGroupMember reports zero members, definitely empty"
                 $obj.Status      = "Empty"
-                $obj.MemberCount = $Count
+                $obj.MemberCount = 0
             } else {
                 Write-Verbose "[$Name] Get-ADGroupMember found members, not empty"
                 $obj.Status      = "Not Empty"
-                $obj.MemberCount = $Count
+                $obj.MemberCount = $Members.Count
             }
         } 
         else {
