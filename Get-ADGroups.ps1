@@ -187,11 +187,12 @@ function Get-ADGroups {
     $Results | sort Name | Export-Csv "$ResultsPath\ADGroup_$($Timestamp).csv" -NoTypeInformation -Verbose
 }
 
-Write-Output "Reading ADGroup info"
-# Uncomment line below to query AD, otherwise it uses cached results
-Get-ADGroups
-$Results = Import-Csv (ls $ResultsFolder\ADGroup* | sort -Descending Name | select -First 1).FullName
-Write-Output "Found $($Results.Count) groups"
+function Get-CachedADGroups {
+    Write-Verbose "Reading ADGroup info"
+    # Uncomment line below to query AD, otherwise it uses cached results
+    $Results = Import-Csv (ls $ResultsFolder\ADGroup* | sort -Descending Name | select -First 1).FullName
+    Write-Verbose "Found $($Results.Count) groups"
+}
 
 Write-Output "`nMail-Enabled?"
 $Results | Group-Object -Property MailEnabled -NoElement | select Name,Count | ft -Property @{Expression="   "},* -AutoSize -HideTableHeaders
