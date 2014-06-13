@@ -116,38 +116,39 @@ function Get-RecipientDisplayType($value)  {
 function Get-ADGroups {
 
     $Properties = @("Members", "proxyAddresses", "adminCount", "info", "ManagedBy", "msExchRecipientDisplayType", "msExchRecipientTypeDetails", "Modified")
-    $Results    = Get-ADGroup -ResultSetSize $null -Filter {Name -like "*"} -Properties $Properties | `
-    % {
-        $Group = $_
+    $Results    = `
+        Get-ADGroup -ResultSetSize $null -Filter {Name -like "*"} -Properties $Properties | `
+        % {
+            $Group = $_
 
-        # Skip groups known to be huge, like Domain Users, which will slow the script
-        switch ($Group.Name) {
-            "Domain Computers" { return }
-        }
+            # Skip groups known to be huge, like Domain Users, which will slow the script
+            switch ($Group.Name) {
+                "Domain Computers" { return }
+            }
 
-        $obj = New-Object –TypeName PSObject
-        $obj | Add-Member -MemberType NoteProperty   -Name Status        -Value ""
-        $obj | Add-Member -MemberType NoteProperty   -Name Name          -Value $Group.Name
-        $obj | Add-Member -MemberType NoteProperty   -Name DN            -Value $Group.DistinguishedName
-        $obj | Add-Member -MemberType NoteProperty   -Name MemberCount   -Value $Group.Members.Count
-#        $obj | Add-Member -MemberType NoteProperty   -Name ProxyAddresses -Value $Group.ProxyAddresses.Value
-        $obj | Add-Member -MemberType ScriptProperty -Name MailEnabled   -Value { if($Group.ProxyAddresses -ne $null) {$true} else {$false} }
-        $obj | Add-Member -MemberType NoteProperty   -Name GroupCategory -Value $Group.GroupCategory
-        $obj | Add-Member -MemberType NoteProperty   -Name GroupScope    -Value $Group.GroupScope
-        $obj | Add-Member -MemberType NoteProperty   -Name ModifiedDaysAgo -Value ([datetime]::Today - $Group.Modified).Days
-        $obj | Add-Member -MemberType NoteProperty   -Name ManagedBy     -Value $Group.ManagedBy
-        $obj | Add-Member -MemberType NoteProperty   -Name OutlookNote   -Value $Group.info
-        $obj | Add-Member -MemberType ScriptProperty -Name RecipientDisplayType -Value { Get-RecipientDisplayType($Group.msExchRecipientDisplayType) }
-        $obj | Add-Member -MemberType ScriptProperty -Name RecipientTypeDetails -Value {        Get-RecipientType($Group.msExchRecipientTypeDetails) }
-        $obj | Add-Member -MemberType ScriptProperty -Name Protected     -Value { if ($Group.adminCount -eq 1) {$true} else {$false} }
-        $obj | Add-Member -MemberType ScriptProperty -Name Builtin       -Value { if ($Group.DistinguishedName -like "*,CN=Builtin,*") {$true} else {$false} }
-#        $obj | Add-Member -MemberType ScriptProperty -Name MembersBucket -Value { switch ($this.MemberCount) { { [int]$_ -eq   0                      } { "  0 "  }
-#                                                                                                               { [int]$_ -eq   1                      } { "  1 "  }
-#                                                                                                               { [int]$_ -ge   2 -and [int]$_ -lt  10 } { "  2+"  }
-#                                                                                                               { [int]$_ -ge  10 -and [int]$_ -lt 100 } { " 10+"  }
-#                                                                                                               { [int]$_ -ge 100                      } { "100+"  }
-#                                                                                                             }
-#                                                                                }
+            $obj = New-Object –TypeName PSObject
+            $obj | Add-Member -MemberType NoteProperty   -Name Status        -Value ""
+            $obj | Add-Member -MemberType NoteProperty   -Name Name          -Value $Group.Name
+            $obj | Add-Member -MemberType NoteProperty   -Name DN            -Value $Group.DistinguishedName
+            $obj | Add-Member -MemberType NoteProperty   -Name MemberCount   -Value $Group.Members.Count
+    #        $obj | Add-Member -MemberType NoteProperty   -Name ProxyAddresses -Value $Group.ProxyAddresses.Value
+            $obj | Add-Member -MemberType ScriptProperty -Name MailEnabled   -Value { if($Group.ProxyAddresses -ne $null) {$true} else {$false} }
+            $obj | Add-Member -MemberType NoteProperty   -Name GroupCategory -Value $Group.GroupCategory
+            $obj | Add-Member -MemberType NoteProperty   -Name GroupScope    -Value $Group.GroupScope
+            $obj | Add-Member -MemberType NoteProperty   -Name ModifiedDaysAgo -Value ([datetime]::Today - $Group.Modified).Days
+            $obj | Add-Member -MemberType NoteProperty   -Name ManagedBy     -Value $Group.ManagedBy
+            $obj | Add-Member -MemberType NoteProperty   -Name OutlookNote   -Value $Group.info
+            $obj | Add-Member -MemberType ScriptProperty -Name RecipientDisplayType -Value { Get-RecipientDisplayType($Group.msExchRecipientDisplayType) }
+            $obj | Add-Member -MemberType ScriptProperty -Name RecipientTypeDetails -Value {        Get-RecipientType($Group.msExchRecipientTypeDetails) }
+            $obj | Add-Member -MemberType ScriptProperty -Name Protected     -Value { if ($Group.adminCount -eq 1) {$true} else {$false} }
+            $obj | Add-Member -MemberType ScriptProperty -Name Builtin       -Value { if ($Group.DistinguishedName -like "*,CN=Builtin,*") {$true} else {$false} }
+    #        $obj | Add-Member -MemberType ScriptProperty -Name MembersBucket -Value { switch ($this.MemberCount) { { [int]$_ -eq   0                      } { "  0 "  }
+    #                                                                                                               { [int]$_ -eq   1                      } { "  1 "  }
+    #                                                                                                               { [int]$_ -ge   2 -and [int]$_ -lt  10 } { "  2+"  }
+    #                                                                                                               { [int]$_ -ge  10 -and [int]$_ -lt 100 } { " 10+"  }
+    #                                                                                                               { [int]$_ -ge 100                      } { "100+"  }
+    #                                                                                                             }
+    #                                                                                }
 
 
          # NOTE: Get-ADGroup doesn't count groups, computers or other non-user members
