@@ -1,3 +1,8 @@
+# Work folders for powershell scripts
+Logs/
+Results/
+Pickles/
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
