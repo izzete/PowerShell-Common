@@ -314,6 +314,68 @@ function Get-PodioViews
 
 <#
 .SYNOPSIS
+    Get details for a given Podio view
+    
+.DESCRIPTION
+    Get details for a given Podio view
+
+    Requires app authentication
+
+.EXAMPLE
+    Get-PodioViewDetails $token $viewid
+
+    Note: $token must be object returned by Get-PodioAccessToken
+    
+.NOTES
+   2014-07-01   IZZETE   Initial version. 
+#>
+function Get-PodioViewDetails
+{
+    [CmdletBinding()]
+    param
+    (
+        [Parameter(Mandatory=$true,
+                   Position=0)]
+        $PodioAccessToken,
+
+        [Parameter(Mandatory=$true,
+                   Position=1)]
+        $ViewID
+    )
+   
+    Write-Debug "Get-PodioViewDetails called"
+    
+    $RequestURL = "https://api.podio.com/view/app/{app_id}/{view_id}"
+    $AppID      = $PodioAccessToken.AppID
+    $Session    = $PodioAccessToken.Session
+
+    $RequestURL = $RequestURL -replace "{app_id}", $AppID
+    $RequestURL = $RequestURL -replace "{view_id}", $ViewID
+
+    Write-Debug "   URL  = $RequestURL"
+    Write-Debug "   Session = `n$($Session | Out-String)"
+
+    try
+    {
+        $Result = Invoke-RestMethod -Uri $RequestURL -Method Get -WebSession $Session
+        return $Result
+    }
+    catch
+    {
+        if ($Error[0] -match "error_description")
+        {
+            Write-Error "Error getting view details: `n$(ConvertFrom-Json $_ | Out-String)"
+        }
+        else
+        {
+            Write-Error "Error getting view details: $_"
+        }
+    }
+}
+
+
+<#
+.SYNOPSIS
    Converts encrypted string to plaintext
 
 .DESCRIPTION
