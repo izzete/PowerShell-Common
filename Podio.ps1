@@ -1,4 +1,15 @@
-﻿<#
+﻿
+$Apps = @{}
+$Apps.Add("Holds-Employees", (New-Object PSCustomObject -Property (
+    @{
+        ClientID = "test144"
+        ClientSecret = "4Y35557Algpz8jyTfOWzWfjvwAHNbJqRaO0azkgg2O5H1h6kQB0R1WuWfdOB4Voe"
+        AppID    = "8414194"
+        AppToken = "7d29d7628d7248898f36a246c3aa50fd"
+     }))
+)
+
+<#
 .SYNOPSIS
    Get Podio access token
     
@@ -352,3 +363,4 @@ $BlankPwd = New-Object PSCustomObject -Property (@{
     Password = ""
 })
 #>
+
