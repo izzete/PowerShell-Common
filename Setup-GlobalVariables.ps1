@@ -25,6 +25,7 @@ function Setup-GlobalVariables
         # If running in debugger
         $global:Script     = $psISE.CurrentFile.FullPath
         $global:ScriptName = $psISE.CurrentFile.DisplayName -replace ".ps1", ""
+        $global:ScriptName = $ScriptName -replace "\*", ""
         $global:ScriptPath = Split-Path -Parent -Path $psISE.CurrentFile.FullPath
     }
     else {
@@ -54,5 +55,5 @@ function Setup-GlobalVariables
 
     # Setup log file
     $global:Timestamp = $(Get-Date -f yyyyMMdd_HHmmss)
-    $global:LogFile   = $LogPath + "\" + $($ScriptName -replace ".ps1", "_${Hostname}_${Timestamp}.log")
+    $global:LogFile   = $LogPath + "\$($ScriptName)_$($Hostname)_$($Timestamp).log"
 }
