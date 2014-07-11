@@ -33,14 +33,18 @@ function Setup-GlobalVariables
         #$global:ScriptPath  = $PSScriptRoot                         # PowerShell 3+
     }
 
+    $global:ConfigPath  = $ScriptPath + "\Configs"
     $global:LogPath     = $ScriptPath + "\Logs"
-    $global:ResultsPath = $ScriptPath + "\Results" 
     $global:PicklePath  = $ScriptPath + "\Pickles"
+    $global:ResultsPath = $ScriptPath + "\Results" 
+    $global:TempPath    = $ScriptPath + "\Temp"
 
     # Create work folders
+    New-Item -ItemType Directory -Force -Path $ConfigPath | Out-Null
     New-Item -ItemType Directory -Force -Path $LogPath | Out-Null
-    New-Item -ItemType Directory -Force -Path $ResultsPath | Out-Null
     New-Item -ItemType Directory -Force -Path $PicklePath | Out-Null
+    New-Item -ItemType Directory -Force -Path $ResultPath | Out-Null
+    New-Item -ItemType Directory -Force -Path $TempPath | Out-Null
 
     # Get host info for system the script is running on
     $reg = Get-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\" | select "NV Hostname", "NV Domain"
