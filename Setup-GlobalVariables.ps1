@@ -14,7 +14,10 @@
 function Setup-GlobalVariables
 {
     [CmdletBinding()]
-    param()
+    param
+    (
+        [boolean] $UseSubFolders = $false                # Use subfolder within work folders or place files in root
+    )
 
 #    $VerbosePreference = 'SilentlyContinue'             # set to SilentlyContinue to disable, Continue to enable
 #    $DebugPreference   = 'SilentlyContinue'             # set to SilentlyContinue to disable, Continue to enable
@@ -35,11 +38,22 @@ function Setup-GlobalVariables
         #$global:ScriptPath  = $PSScriptRoot                         # PowerShell 3+
     }
 
-    $global:ConfigPath  = $ScriptPath + "\Configs\" + $ScriptName
-    $global:LogPath     = $ScriptPath + "\Logs\"    + $ScriptName
-    $global:PicklePath  = $ScriptPath + "\Pickles\" + $ScriptName
-    $global:ResultPath  = $ScriptPath + "\Results\" + $ScriptName
-    $global:TempPath    = $ScriptPath + "\Temp\"    + $ScriptName
+    if ($UseSubFolders)
+    {
+        $global:ConfigPath  = $ScriptPath + "\Configs\" + $ScriptName
+        $global:LogPath     = $ScriptPath + "\Logs\"    + $ScriptName
+        $global:PicklePath  = $ScriptPath + "\Pickles\" + $ScriptName
+        $global:ResultPath  = $ScriptPath + "\Results\" + $ScriptName
+        $global:TempPath    = $ScriptPath + "\Temp\"    + $ScriptName
+    }
+    else
+    {
+        $global:ConfigPath  = $ScriptPath + "\Configs\"
+        $global:LogPath     = $ScriptPath + "\Logs\"    + $ScriptName
+        $global:PicklePath  = $ScriptPath + "\Pickles\"
+        $global:ResultPath  = $ScriptPath + "\Results\"
+        $global:TempPath    = $ScriptPath + "\Temp\"
+    }
 
     # Create work folders
     New-Item -ItemType Directory -Force -Path $ConfigPath | Out-Null
