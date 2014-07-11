@@ -36,7 +36,7 @@ function Setup-GlobalVariables
     $global:ConfigPath  = $ScriptPath + "\Configs"
     $global:LogPath     = $ScriptPath + "\Logs"
     $global:PicklePath  = $ScriptPath + "\Pickles"
-    $global:ResultsPath = $ScriptPath + "\Results" 
+    $global:ResultPath  = $ScriptPath + "\Results" 
     $global:TempPath    = $ScriptPath + "\Temp"
 
     # Create work folders
