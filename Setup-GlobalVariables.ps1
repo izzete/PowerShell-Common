@@ -23,28 +23,29 @@ function Setup-GlobalVariables
     # Determine location of work folders
     if ($psISE) {
         # If running in debugger
-        $global:ScriptName = $psISE.CurrentFile.DisplayName   # -replace ".ps1", ""
+        $global:Script     = $psISE.CurrentFile.FullPath
+        $global:ScriptName = $psISE.CurrentFile.DisplayName -replace ".ps1", ""
         $global:ScriptPath = Split-Path -Parent -Path $psISE.CurrentFile.FullPath
     }
     else {
         # Else running in powershell console
-        $global:ScriptName = $MyInvocation.MyCommand.Name
+        $global:ScriptName = $MyInvocation.MyCommand.Name -replace ".ps1", ""
         $global:ScriptPath = Split-Path -Parent -Path $MyInvocation.MyCommand.Definition 
         #$global:ScriptPath  = $PSScriptRoot                         # PowerShell 3+
     }
 
-    $global:ConfigPath  = $ScriptPath + "\Configs"
-    $global:LogPath     = $ScriptPath + "\Logs"
-    $global:PicklePath  = $ScriptPath + "\Pickles"
-    $global:ResultPath  = $ScriptPath + "\Results" 
-    $global:TempPath    = $ScriptPath + "\Temp"
+    $global:ConfigPath  = $ScriptPath + "\Configs\" + $ScriptName
+    $global:LogPath     = $ScriptPath + "\Logs\"    + $ScriptName
+    $global:PicklePath  = $ScriptPath + "\Pickles\" + $ScriptName
+    $global:ResultPath  = $ScriptPath + "\Results\" + $ScriptName
+    $global:TempPath    = $ScriptPath + "\Temp\"    + $ScriptName
 
     # Create work folders
     New-Item -ItemType Directory -Force -Path $ConfigPath | Out-Null
-    New-Item -ItemType Directory -Force -Path $LogPath | Out-Null
+    New-Item -ItemType Directory -Force -Path $LogPath    | Out-Null
     New-Item -ItemType Directory -Force -Path $PicklePath | Out-Null
     New-Item -ItemType Directory -Force -Path $ResultPath | Out-Null
-    New-Item -ItemType Directory -Force -Path $TempPath | Out-Null
+    New-Item -ItemType Directory -Force -Path $TempPath   | Out-Null
 
     # Get host info for system the script is running on
     $reg = Get-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\" | select "NV Hostname", "NV Domain"
