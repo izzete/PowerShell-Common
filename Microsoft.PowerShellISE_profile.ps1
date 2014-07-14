@@ -94,8 +94,9 @@ $psISE.CurrentPowerShellTab.AddOnsMenu.SubMenus.Add(
     {
         $Username   = $env:USERDOMAIN.ToUpper() + "\adm_" + $env:USERNAME.ToLower()
         $Credential = Get-Credential $Username
-        $Server     = $psISE.CurrentPowerShellTab.DisplayName -replace "\* "
-        $Server     = $psISE.CurrentPowerShellTab.DisplayName -replace "-[0-9]$"
+        $Server     = $psISE.CurrentPowerShellTab.DisplayName
+        $Server     = $Server -replace "\* "
+        $Server     = $Server -replace "-[0-9]$"
         $Session    = New-PSSession -ComputerName $Server -Credential $Credential -Authentication Kerberos
 #        Import-PSSession $Session
     },
@@ -137,8 +138,9 @@ $psISE.CurrentPowerShellTab.AddOnsMenu.SubMenus.Add(
     {
         $Username   = $env:USERDOMAIN.ToUpper() + "\adm_" + $env:USERNAME.ToLower()
         $Credential = Get-Credential $Username
-        $Server     = $psISE.CurrentPowerShellTab.DisplayName -replace "\* "
-        $Server     = $psISE.CurrentPowerShellTab.DisplayName -replace "-[0-9]$"
+        $Server     = $psISE.CurrentPowerShellTab.DisplayName
+        $Server     = $Server -replace "\* "
+        $Server     = $Server -replace "-[0-9]$"
         $ExSession  = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri http://$Server/PowerShell/ -Credential $Credential -Authentication Kerberos
         Import-PSSession $ExSession
     },
